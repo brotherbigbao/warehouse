@@ -1,0 +1,54 @@
+<!--{template common/header}-->
+<style type="text/css">
+    #warehouse { padding-top: 20px; padding-bottom: 20px; }
+</style>
+<div id="pt" class="bm cl">
+    <div class="z">
+        <a href="./" class="nvhm" title="{lang homepage}">$_G[setting][bbname]</a><em>&raquo;</em><a href="plugin.php?id=warehouse:map">仓储信息</a>
+    </div>
+</div>
+<ul class="tb cl">
+    <li><a href="plugin.php?id=warehouse:new">发布信息</a></li>
+    <li class="a"><a href="plugin.php?id=warehouse:list">仓库列表</a></li>
+    <li><a href="plugin.php?id=warehouse:company">企业信息</a></li>
+</ul>
+<div id="warehouse">
+    <ul>
+        <!--{loop $warehouse_list $key $val}-->
+        <li class="bbda ptm pbm ajaxdel_container">
+            <a class="y ajaxdel" href="plugin.php?id=warehouse:ajax&type=del_warehouse&warehouseid={$val['warehouseid']}">删除</a>
+            <a class="y" href="plugin.php?id=warehouse:new&warehouseid={$val['warehouseid']}">编辑&nbsp;</a>
+            <a href="plugin.php?id=warehouse:show&warehouseid={$val['warehouseid']}" target="_blank">{$val['name']}</a> <span class="xg1">{eval echo date("Y-m-d H:i:s", $val['addtime'])}</span>
+            <div class="quote">
+                <blockquote id="quote_preview"><!--{if $val['content']}-->{$val['content']}<!--{else}-->无详细介绍<!--{/if}--></blockquote>
+            </div>
+        </li>
+        <!--{/loop}-->
+    </ul>
+</div>
+<script src="./source/plugin/warehouse/template/js/jquery-1.10.2.min.js"></script>
+<script>jQuery.noConflict();</script>
+<script>
+jQuery(document).ready(function(){
+    jQuery(".ajaxdel").click(function(event){
+            var url = this.href;
+            var target = event.target;
+            if(window.confirm("您确信删除么？")){
+                    jQuery.ajax({
+                            'url' : url,
+                            'dataType' : 'json'
+                    }).done(function(data){
+                            if(data.status){
+                                jQuery(target).parents(".ajaxdel_container").fadeOut("slow",function(){
+                                    jQuery(target).parents(".ajaxdel_container").remove();
+                                }); 
+                            }else{
+                                    alert('操作失败!');
+                            }
+                    });
+            }
+            event.preventDefault();
+    });
+});
+</script>
+<!--{template common/footer}-->

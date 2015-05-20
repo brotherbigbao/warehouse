@@ -1,0 +1,135 @@
+<!--{template common/header}-->
+<style type="text/css">
+    #warehouse { padding-top: 20px; }
+    #warehouse_right { float: right; width: 228px; background: #f5f5f5; }
+    #warehouse_right .inner { border: 1px solid #e0e0e0; border-top: 2px solid #b8b8b8; border-left: 0px; }
+                     .companyinfo { padding: 5px; color: #666; border-bottom: 1px dashed #e0e0e0; }
+                     .companyinfo li { height: 25px; line-height: 25px; }
+                     .companyinfo .companyname { font-weight: bold; font-size: 18px; text-align: center; color: #3198db; }
+                     .companyinfo li span { width: 80px; text-align: right; display: inline-block; font-weight: bold; }
+                     
+                     .warehouse_list { padding: 5px; color: #666; border-bottom: 1px dashed #e0e0e0; }
+                     .warehouse_list:hover { background: #fff; cursor: pointer; }
+                     .warehouse_list li { height: 25px; line-height: 25px; padding-left: 20px; }
+
+    #warehouse_left { margin-right: 228px; }
+    #warehouse_left .inner { border: 1px solid #e0e0e0; border-top: 2px solid #eb9120; padding: 15px; }
+    
+                    .warehouse_base { padding: 10px 10px 20px 10px; }
+                    .warehouse_base h2 { font-size: 18px; font-weight: normal; font-family: "Microsoft Yahei","sans-serif"; color: #000; height: 30px; line-height: 30px; margin-left: 26px; margin-bottom: 15px; }
+                    .warehouse_base .ul { float:left; width: 48%; font-size: 14px; font-family: "宋体"; }
+                    .warehouse_base li { height: 30px; line-height: 30px; }
+                    .warehouse_base span { display: inline-block; width: 70px; text-align: right; color: #585858; }
+                    
+                    .warehouse_content .title { background: #f5f5f5; border-bottom: 2px solid #eb9120; height: 31px; line-height: 31px; }
+                    .warehouse_content h2 { float: left; background: #f0a52a; color: #fff; font-size: 14px; width: 100px; text-align: center; font-family: "Microsoft YaHei" }
+                    .warehouse_content p { margin: 10px 0; font-size: 14px; line-height: 24px; text-indent: 2em; }
+                    
+                    .warehouse_map .title { background: #f5f5f5; border-bottom: 2px solid #eb9120; height: 31px; line-height: 31px; }
+                    .warehouse_map h2 { float: left; background: #f0a52a; color: #fff; font-size: 14px; width: 100px; text-align: center; font-family: "Microsoft YaHei" }
+                                   #map_container { height: 280px; border: 1px solid #e0e0e0; margin: 5px 0; }
+                                   
+                    .warehouse_image .title { background: #f5f5f5; border-bottom: 2px solid #eb9120; height: 31px; line-height: 31px; }
+                    .warehouse_image h2 { float: left; background: #f0a52a; color: #fff; font-size: 14px; width: 100px; text-align: center; font-family: "Microsoft YaHei" }
+</style>
+<div id="pt" class="bm cl">
+    <div class="z">
+        <a href="./" class="nvhm" title="{lang homepage}">$_G[setting][bbname]</a><em>&raquo;</em><a href="plugin.php?id=warehouse:map">仓储信息</a>
+    </div>
+</div>
+<div id="warehouse">
+    <div id="warehouse_right">
+        <div class="inner">
+            <ul class='companyinfo'>
+                <li class='companyname'>{$company['companyname']}</li>
+                <li><span>成立时间：</span>{$company['founded']}</li>
+                <li><span>公司网址：</span>{$company['website']}</li>
+                <li><span>公司地址：</span>{$company['address']}</li>
+                <li><span>联系人：</span>{$company['linkman']}</li>
+                <li><span>联系电话：</span>{$company['phone']}</li>
+                <li><span>传真：</span>{$company['fax']}</li>
+                <li><span>电子邮件：</span>{$company['email']}</li>
+            </ul>
+            <!--{loop $warehouse_list $val}-->
+            <ul class='warehouse_list'>
+                <li><strong><a href="plugin.php?id=warehouse:show&warehouseid={$val['warehouseid']}">{$val['name']}</a></strong></li>
+                <li>类型：{$type[$val['type']]}</li>
+                <li>状态：{$status[$val['status']]}</li>
+                <li>地面：{$floor[$val['floor']]}</li>
+                <li>面积：{$val['area']}平米</li>
+                <li>业务：<!--{eval echo business_display($val['business'], $business);}--></li>
+                <li>地址：{$val['address']}</li>
+            </ul>
+            <!--{/loop}-->
+        </div>
+    </div>
+    <div id="warehouse_left">
+        <div class="inner">
+            <div class="warehouse_base">
+                <h2>{$warehouse['name']}</h2>
+                <div class="ul">
+                    <ul>
+                        <li><span>类型：</span>{$type[$warehouse['type']]}</li>
+                        <li><span>状态：</span>{$status[$warehouse['status']]}</li>
+                        <li><span>地面：</span>{$floor[$warehouse['floor']]}</li>
+                        <li><span>面积：</span>{$warehouse['area']}平米</li>
+                        <li><span>业务：</span><!--{eval echo business_display($warehouse['business'], $business);}--></li>
+                    </ul>
+                </div>
+                <div class="ul">
+                    <ul>
+                        <li><span>净高：</span>{$warehouse['high']}米</li>
+                        <li><span>平台高度：</span>{$warehouse['platform_high']}米</li>
+                        <li><span>平台宽度：</span>{$warehouse['platform_width']}米</li>
+                        <li><span>雨棚宽度：</span>{$warehouse['canopy_width']}平米</li>
+                        <li><span>仓库地址：</span>{$warehouse['address']}</li>
+                    </ul>
+                </div>
+                <div style="clear:left;"></div>
+            </div>
+            <div class="warehouse_content">
+                <div class="title">
+                    <h2>详细介绍</h2>
+                </div>
+                <p>
+                    {$warehouse['content']}
+                </p>
+                <p>
+                    {$company['content']}
+                </p>
+            </div>
+            <div class="warehouse_map">
+                <div class="title">
+                    <h2>电子地图</h2>
+                </div>
+                <div id='map_container'>
+                </div>
+            </div>
+            <div class="warehouse_image">
+                <div class="title">
+                    <h2>图片资料</h2>
+                </div>
+                <ul>
+                    <!--{loop $images $image}-->
+                    <li><img src="data/attachment/category/{$image['imageurl']}" style="width: 100%;"></li>
+                    <!--{/loop}-->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div style="clear:both;"></div>
+</div>
+<script src="http://api.map.baidu.com/api?v=2.0&amp;ak=7669091047b96d06f56a63cd5bb4d9ca"></script>
+<script src="./source/plugin/warehouse/template/js/jquery-1.10.2.min.js"></script>
+<script>jQuery.noConflict();</script>
+<script>
+    var map = new BMap.Map("map_container", {"enableMapClick":false});
+    map.addControl(new BMap.NavigationControl());
+    map.enableScrollWheelZoom();
+    var point = new BMap.Point({$warehouse['lng']}, {$warehouse['lat']});
+    map.centerAndZoom(point, 15);
+    var marker = new BMap.Marker(point);
+    map.addOverlay(marker);
+    marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+</script>
+<!--{template common/footer}-->

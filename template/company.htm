@@ -1,0 +1,95 @@
+<!--{template common/header}-->
+<style type="text/css">
+    #warehouse { padding-top: 20px; }
+</style>
+<div id="pt" class="bm cl">
+    <div class="z">
+        <a href="./" class="nvhm" title="{lang homepage}">$_G[setting][bbname]</a><em>&raquo;</em><a href="plugin.php?id=warehouse:map">仓储信息</a>
+    </div>
+</div>
+<ul class="tb cl">
+    <li><a href="plugin.php?id=warehouse:new">发布信息</a></li>
+    <li><a href="plugin.php?id=warehouse:list">仓库列表</a></li>
+    <li class="a"><a href="plugin.php?id=warehouse:company">企业信息</a></li>
+</ul>
+<div id="warehouse">
+    <script type="text/javascript" src="{$_G[setting][jspath]}calendar.js?{VERHASH}"></script>
+    <form id="companyform" name="companyform" method="post" autocomplete="off" action="" >
+        <input type="hidden" name="formhash" value="{FORMHASH}" />
+        <table summary="基本资料" cellspacing="0" cellpadding="0" class="tfm">
+            <tr>
+                <th>企业名称</th>
+                <td>
+                    <input type="text" name="company[companyname]" id="companyname" class="px" value="{$company['companyname']}" />
+                    <p class="d">这里填写您的公司名称,不要随意修改</p>
+                </td>
+            </tr>
+            <tr>
+                <th>联系人</th>
+                <td>
+                    <input type="text" name="company[linkman]"   class="px" value="{$company['linkman']}" />
+                </td>
+            </tr>
+            <tr>
+                <th>联系电话</th>
+                <td>
+                    <input type="text" name="company[phone]"   class="px" value="{$company['phone']}" />
+                </td>
+            </tr>
+            <tr>
+                <th>传真</th>
+                <td>
+                    <input type="text" name="company[fax]"   class="px" value="{$company['fax']}" />
+                </td>
+            </tr>
+            <tr>
+                <th>电子邮箱</th>
+                <td>
+                    <input type="text" name="company[email]"   class="px" value="{$company['email']}" />
+                </td>
+            </tr>
+            <tr>
+                <th>成立时间</th>
+                <td>
+                    <input type="text" name="company[founded]" onclick="showcalendar(event, this)"   class="px" value="{$company['founded']}" />
+                </td>
+            </tr>
+            <tr>
+                <th>公司网址</th>
+                <td>
+                    <input type="text" name="company[website]"   class="px" value="{$company['website']}" />
+                </td>
+            </tr>
+            <tr>
+                <th>公司地址</th>
+                <td>
+                    <input type="text" name="company[address]"   class="px" value="{$company['address']}" />
+                </td>
+            </tr>
+            <tr>
+                <th>企业资料</th>
+                <td>
+                    <textarea name="company[content]" class="pt" rows="6" cols="40">{$company['content']}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <th>&nbsp;</th>
+                <td><button type="submit" name="companysubmit" value="true" class="pn pnc" /><strong>发布</strong></button></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script src="./source/plugin/warehouse/template/js/jquery-1.10.2.min.js"></script>
+<script>jQuery.noConflict();</script>
+<script>
+jQuery(document).ready(function($){
+    $('#companyform').submit(function(event){
+        var companyname = $("#companyname").val();
+        if(!companyname){
+            alert("企业名称为必填项！");
+            event.preventDefault();
+        }
+    });
+});
+</script>
+<!--{template common/footer}-->

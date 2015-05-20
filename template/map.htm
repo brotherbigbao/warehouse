@@ -1,0 +1,135 @@
+<!--{template common/header}-->
+<style type="text/css">
+    #warehouse_option { position: relative; }
+    #warehouse_option .option { line-height: 25px; }
+    #warehouse_option #op_check { line-height: 25px; }
+    #warehouse_option span { font-weight: bold; color: #666; }
+    #warehouse_option a { color: #005aa0; }
+    #warehouse_option a:hover { color: #e4393c; text-decoration: none; }
+    #warehouse_area_min, #warehouse_area_max { width: 80px; vertical-align: middle; }
+    #warehouse_keyword, #warehouse_search { vertical-align: middle; }
+    #op_check a { color: #f00; font-weight: bold; display: inline-block; padding: 0 10px; transition: color .5s ease-in; }
+    #op_check a:hover { color: #bbb; }
+    #warehouse_option .newinfo { position: absolute; right: 50px; bottom: 30px; width: 150px; height: 50px; }
+    #warehouse_option .button { width: 150px; height: 50px; line-height: 50px; text-align: center; font-size: 20px; font-weight: bold; color: #fff; border-radius: 5px; background: #0480ed; background-image: linear-gradient(-360deg,#048ef0,0372ea); }
+    #warehouse_option .button:hover { box-shadow: 0 0 5px #048ef0; }
+    
+    #warehouse_main { background-color: #f8f8f8; }
+    #warehouse_main .left { margin-right: 250px; }
+    #warehouse_main .left .inner { border: 1px solid #e0e0e0; border-right: 3px solid #e0e0e0; position: relative; }
+    #warehouse_main .left .loader { position: absolute; left: 50%; top: 10px; display: none; }
+                          #map { height: 550px; }
+    #warehouse_main .right { float: right; width: 250px; }
+    #warehouse_main .right .inner { border-top: 3px solid #ff5b00; }
+    #warehouse_main .right h2 { background: url(./source/plugin/warehouse/template/image/list_title.png) repeat-x; height:37px; line-height:37px; text-align: center; }
+                           #count { color: #f00; }
+                           #warehouse_list { overflow: auto;height:475px; }
+                           #warehouse_list li { padding: 10px; border-bottom: 1px dotted #bababa; }
+                           #warehouse_list li:hover { background: #fff; cursor: pointer; }
+                           #warehouse_list dt { line-height: 25px; padding-top: 3px; padding-left: 22px; }
+                           #warehouse_list dt a { font-weight: bold; color: #555; font-size: 14px; }
+                           #warehouse_list dt a:hover { color: #ff8040; text-decoration: none; }
+                           #warehouse_list dd { padding-left: 25px; background: url(./source/plugin/warehouse/template/image/list_index.png) 0 50% no-repeat; }
+                           #warehouse_list dd a { color: #3198db; }
+                           #warehouse_list i.marker{ *display: inline; float: left; *float: none; _display: block; }                          
+                           .marker { width: 23px; height: 25px; display: inline-block; vertical-align: middle; background-image: url(./source/plugin/warehouse/template/image/markers.png);}
+                           .marker1 {background-position:0px 0px;}
+                           .marker2 {background-position:0px -25px;}
+                           .marker3 {background-position:0px -50px;}
+                           .marker4 {background-position:0px -75px;}
+                           .marker5 {background-position:0px -100px;}
+                           .marker6 {background-position:0px -125px;}
+                           .marker7 {background-position:0px -150px;}
+                           .marker8 {background-position:0px -175px;}
+                           .marker9 {background-position:0px -200px;}
+                           .marker10{background-position:0px -225px;}
+                           .marker11{background-position:0px -250px;}
+                           .marker12{background-position:0px -275px;}
+                           .marker13{background-position:0px -300px;}
+                           .marker14{background-position:0px -325px;}
+                           .marker15{background-position:0px -350px;}
+                           .marker16{background-position:0px -375px;}
+                           .marker17{background-position:0px -400px;}
+                           .marker18{background-position:0px -425px;}
+                           .marker19{background-position:0px -450px;}
+                           .marker20{background-position:0px -475px;}
+                           .marker21{background-position:0px -500px;}
+                           .marker22{background-position:0px -525px;}
+                           .marker23{background-position:0px -550px;}
+                           .marker24{background-position:0px -575px;}
+                           .marker25{background-position:0px -600px;}
+                           .marker26{background-position:0px -625px;}
+                           .marker27{background-position:0px -650px;}
+                           .marker28{background-position:0px -675px;}
+                           .marker29{background-position:0px -700px;}
+                           .marker30{background-position:0px -725px;}
+    
+    .markerinfo{margin:7px 0;}
+    .markerinfo a{text-decoration:none;}
+    .markerinfo dt{border-bottom: 1px solid #ccc;padding-bottom: 5px;margin-bottom:5px;}
+    .markerinfo dt a{font-weight:bold;color:#555;font-size:14px;}
+    .markerinfo dd{padding-left:25px;background:url(./source/plugin/warehouse/template/image/map_icon_index.png) 0 50% no-repeat;}
+    .markerinfo dd.more{padding-left:0;background:none;}
+    .markerinfo dd a{color:#3198db;}
+    .markerinfo .more{text-align: right;}
+                           
+</style>
+<div id="pt" class="bm cl">
+    <div class="z">
+            <a href="./" class="nvhm" title="{lang homepage}">$_G[setting][bbname]</a><em>&raquo;</em><a href="plugin.php?id=citymap:map">仓储信息</a>
+    </div>
+</div>
+<div id="warehouse_option">
+    <div class="option"><span>仓库类型：</span><!--{loop $warehouse_type $key $val}--><a href="javascript:void(0)" data-id="{$key}" class="warehouse_type">{$val}</a>&nbsp;&nbsp;<!--{/loop}--></div>
+    <div class="option"><span>仓库状态：</span><!--{loop $warehouse_status $key $val}--><a href="javascript:void(0)" data-id="{$key}" class="warehouse_status">{$val}</a>&nbsp;&nbsp;<!--{/loop}--></div>
+    <div class="option"><span>面积范围：</span><input type="text" id="warehouse_area_min">-<input type="text" id="warehouse_area_max">&nbsp;&nbsp;<span>关键字：</span><input type="text" id="warehouse_keyword"><button type="button" id="warehouse_search">检索</button></div>
+    <div id="op_check"><span>已选条件：</span></div>
+    <div class="newinfo"><a href="plugin.php?id=warehouse:new"><div class="button">发布</div></a></div>
+</div>
+<div id="warehouse_main">
+    <div class="right">
+        <div class="inner">
+            <h2>一共找到<span id="count">0</span>个仓库</h2>
+            <ul id="warehouse_list">
+                <!--
+                <li>
+                    <i class="marker marker1"></i>
+                    <dl>
+                        <dt><a href="javascript:void(0)" target="_blank">仓库名称</a></dt>
+                        <dd><a href="javascript:void(0)">内容</a></dd>
+                        <dd><a href="javascript:void(0)">内容</a></dd>
+                        <dd><a href="javascript:void(0)">内容</a></dd>
+                        <dd><a href="javascript:void(0)">内容</a></dd>
+                        <dd><a href="javascript:void(0)">内容</a></dd>
+                    </dl>
+                </li>
+                -->
+            </ul>
+        </div>
+    </div>    
+    <div class="left">
+        <div class="inner">
+            <div id="map"></div>
+            <div class="loader"><img src="./source/plugin/warehouse/template/image/loader2.gif"></div>
+        </div>
+    </div>
+    <div style="clear:both;"></div>
+</div>
+<script src="http://api.map.baidu.com/api?v=2.0&amp;ak=7669091047b96d06f56a63cd5bb4d9ca"></script>
+<script src="./source/plugin/warehouse/template/js/jquery-1.10.2.min.js"></script>
+<script>jQuery.noConflict();</script>
+<!--{if $location_display == 1}-->
+<script>var lng_display={$lng_display},lat_display={$lat_display},zoom_display={$zoom_display};</script>
+<!--{else}-->
+<script>var lng_display='',lat_display='';</script>
+<!--{/if}-->
+<script>
+    var marker_icon_url = "./source/plugin/warehouse/template/image/map_markers.png";
+    var marker_icon_blue = "./source/plugin/warehouse/template/image/map_marker_blue.png";
+    var json_type = {$json_type};
+    var json_status = {$json_status};
+    var json_floor = {$json_floor};
+    var json_business = {$json_business};
+</script>
+<script src="./source/plugin/warehouse/template/js/map.js"></script>
+<!--{template common/footer}-->

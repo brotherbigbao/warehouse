@@ -1,0 +1,247 @@
+<!--{template common/header}-->
+<style type="text/css">
+    /*! perfect-scrollbar - v0.4.6 */
+    .ps-container .ps-scrollbar-x-rail{position:absolute;bottom:3px;height:8px;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;opacity:0;filter:alpha(opacity=0);-o-transition:background-color .2s linear,opacity .2s linear;-webkit-transition:background-color.2s linear,opacity .2s linear;-moz-transition:background-color .2s linear,opacity .2s linear;transition:background-color .2s linear,opacity .2s linear}.ps-container:hover .ps-scrollbar-x-rail,.ps-container.hover .ps-scrollbar-x-rail{opacity:.6;filter:alpha(opacity=60)}.ps-container .ps-scrollbar-x-rail:hover,.ps-container .ps-scrollbar-x-rail.hover{background-color:#eee;opacity:.9;filter:alpha(opacity=90)}.ps-container .ps-scrollbar-x-rail.in-scrolling{opacity:.9;filter:alpha(opacity=90)}.ps-container .ps-scrollbar-y-rail{position:absolute;right:3px;width:8px;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;opacity:0;filter:alpha(opacity=0);-o-transition:background-color .2s linear,opacity .2s linear;-webkit-transition:background-color.2s linear,opacity .2s linear;-moz-transition:background-color .2s linear,opacity .2s linear;transition:background-color .2s linear,opacity .2s linear}.ps-container:hover .ps-scrollbar-y-rail,.ps-container.hover .ps-scrollbar-y-rail{opacity:.6;filter:alpha(opacity=60)}.ps-container .ps-scrollbar-y-rail:hover,.ps-container .ps-scrollbar-y-rail.hover{background-color:#eee;opacity:.9;filter:alpha(opacity=90)}.ps-container .ps-scrollbar-y-rail.in-scrolling{opacity:.9;filter:alpha(opacity=90)}.ps-container .ps-scrollbar-x{position:absolute;bottom:0;height:8px;background-color:#aaa;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;-o-transition:background-color .2s linear;-webkit-transition:background-color.2s linear;-moz-transition:background-color .2s linear;transition:background-color .2s linear}.ps-container.ie6 .ps-scrollbar-x{font-size:0}.ps-container .ps-scrollbar-x-rail:hover .ps-scrollbar-x,.ps-container .ps-scrollbar-x-rail.hover .ps-scrollbar-x{background-color:#999}.ps-container .ps-scrollbar-y{position:absolute;right:0;width:8px;background-color:#aaa;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;-o-transition:background-color .2s linear;-webkit-transition:background-color.2s linear;-moz-transition:background-color .2s linear;transition:background-color .2s linear}.ps-container.ie .ps-scrollbar-y{font-size:0}.ps-container .ps-scrollbar-y-rail:hover .ps-scrollbar-y,.ps-container .ps-scrollbar-y-rail.hover .ps-scrollbar-y{background-color:#999}
+    
+    #warehouse { padding-top: 20px; position: relative; }
+    #warehouse_setmap { width: 100%; height: 360px; border: 1px solid #ccc; }
+    #warehouse_add_image { float: right; }
+    #warehouse_image_list { position: absolute; width: 300px; height: 450px; top: 20px; right: 10px; }
+            #warehouse_image_list h2 { border-bottom: 1px solid #dddddd; height: 25px; line-height: 25px; }
+            #warehouse_image_list ul { margin: 10px; }
+            #warehouse_image_list li { position: relative; padding: 10px 10px 10px 0; }
+            #warehouse_image_list img { height: 120px; }
+            #warehouse_image_list a { color: #333; text-decoration: none; }
+            #warehouse_image_list a:hover { text-decoration: underline; cursor: pointer; }
+            #warehouse_image_list span { position: absolute; right: 5px; top: 50px; }
+</style>
+<div id="pt" class="bm cl">
+    <div class="z">
+        <a href="./" class="nvhm" title="{lang homepage}">$_G[setting][bbname]</a><em>&raquo;</em><a href="plugin.php?id=warehouse:map">仓储信息</a>
+    </div>
+</div>
+<ul class="tb cl">
+    <li class="a"><a href="plugin.php?id=warehouse:new">发布信息</a></li>
+    <li><a href="plugin.php?id=warehouse:list">仓库列表</a></li>
+    <li><a href="plugin.php?id=warehouse:company">企业信息</a></li>
+</ul>
+<div id="warehouse">
+    <form id="houseform" method="post" autocomplete="off" action="plugin.php?id=warehouse:new" enctype="multipart/form-data" >
+        <input type="hidden" name="formhash" value="{FORMHASH}" />
+        <table summary="基本资料" cellspacing="0" cellpadding="0" class="tfm">
+            <tr>
+                <th>仓库名称</th>
+                <td>
+                    <input type="text" name="house[name]" id="warehouse_name" class="px" value="{$house['name']}" />
+                    <p class="d">这里填写您的公司名称,不要随意修改</p>
+                </td>
+            </tr>
+            <tr>
+                <th>仓库类型</th>
+                <td>
+                    <select name="house[type]" >
+                        <option value="" selected>----请选择----</option>
+                        <!--{loop $warehouse_type $key $val}-->
+                        <option value="{$key}" {$sels['type'][$key]}>{$val}</option>
+                        <!--{/loop}-->
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>仓库状态</th>
+                <td>
+                    <select name="house[status]" >
+                        <option value="" selected>----请选择----</option>
+                        <!--{loop $warehouse_status $key $val}-->
+                        <option value="{$key}" {$sels['status'][$key]}>{$val}</option>
+                        <!--{/loop}-->
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>仓库地面</th>
+                <td>
+                    <select name="house[floor]" >
+                        <option value="" selected>----请选择----</option>
+                        <!--{loop $warehouse_floor $key $val}-->
+                        <option value="{$key}" {$sels['floor'][$key]}>{$val}</option>
+                        <!--{/loop}-->
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>仓库业务</th>
+                <td>
+                    <!--{loop $warehouse_business $key $val}-->
+                    <label><input type="checkbox" name="house[business][]" value="{$key}" {$sels['business'][$key]}>{$val}</label>
+                    <!--{/loop}-->
+                </td>
+            </tr>
+            <tr>
+                <th>仓库面积</th>
+                <td>
+                    <input type="text" name="house[area]"  class="px" value="{$house['area']}" />平米
+                </td>
+            </tr>
+            <tr>
+                <th>仓库净高</th>
+                <td>
+                    <input type="text" name="house[high]"   class="px" value="{$house['high']}" />米
+                </td>
+            </tr>
+            <tr>
+                <th>平台高度</th>
+                <td>
+                    <input type="text" name="house[platform_high]"   class="px" value="{$house[platform_high]}" />米
+                </td>
+            </tr>
+            <tr>
+                <th>平台宽度</th>
+                <td>
+                    <input type="text" name="house[platform_width]"   class="px" value="{$house[platform_width]}" />米
+                </td>
+            </tr>
+            <tr>
+                <th>雨棚宽度</th>
+                <td>
+                    <input type="text" name="house[canopy_width]"   class="px" value="{$house[canopy_width]}" />米
+                </td>
+            </tr>
+            <tr>
+                <th>仓库地址</th>
+                <td>
+                    <input type="text" name="house[address]"   class="px" value="{$house[address]}" />
+                </td>
+            </tr>
+            <tr>
+                <th>说明</th>
+                <td>
+                    <textarea name="house[content]" class="pt" rows="6" cols="40">{$house[content]}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <th>标注位置</th>
+                <td>
+                    <div id="warehouse_setmap"></div>
+                    <p class="d">请标注地理位置</p>
+                    <input type="hidden" name="house[lng]" id="warehouse_lng" value="{$house['lng']}" />
+                    <input type="hidden" name="house[lat]" id="warehouse_lat" value="{$house['lat']}" />
+                </td>
+            </tr>
+            <tr>
+                <th>上传图片</th>
+                <td>
+                    <button type="button" id="warehouse_add_image">增加一个</button>
+                    <input name="houseimage[]" type="file" /><br/>
+                </td>
+            </tr>
+            <tr>
+                <th>&nbsp;</th>
+                <td>
+                    <input type="hidden" name="housesubmit" value="true" />
+                    <input type="hidden" name="house[warehouseid]" value="{$house['warehouseid']}" />
+                    <button type="submit" class="pn pnc" /><strong>发布</strong></button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <div id="warehouse_image_list">
+        <h2>已上传图片</h2>
+        <div id="warehouse_scroll" style="position: relative; overflow: hidden; height: 430px;">
+            <ul>
+                <!--{loop $images $key $val}-->
+                <li class="ajaxdel_container"><img src="data/attachment/category/{$val['imageurl']}.thumb.jpg"><span><a href="plugin.php?id=warehouse:ajax&type=del_image&imageid={$val['imageid']}" class="ajaxdel">删除</a></span></li>
+                <!--{/loop}-->
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="http://api.map.baidu.com/api?v=2.0&amp;ak=7669091047b96d06f56a63cd5bb4d9ca"></script>
+<script src="./source/plugin/warehouse/template/js/jquery-1.10.2.min.js"></script>
+<script>jQuery.noConflict();</script>
+<!--{if $location_input == 1}-->
+<script>var lng_input={$lng_input},lat_input={$lat_input},zoom_input={$zoom_input};</script>
+<!--{else}-->
+<script>var lng_input='',lat_input='';</script>
+<!--{/if}-->
+<script src="./source/plugin/warehouse/template/js/jquery.scrollbar.min.js"></script>
+<script>
+    var map = new BMap.Map("warehouse_setmap", {"enableMapClick":false});
+    map.addControl(new BMap.NavigationControl());
+    map.enableScrollWheelZoom();
+    var lng = jQuery("#warehouse_lng").val();
+    var lat = jQuery("#warehouse_lat").val();
+    if(lng && lat){
+        var point = new BMap.Point(lng, lat);
+        map.centerAndZoom(point, 12);
+        var marker = new BMap.Marker(point);
+    }else{
+        var point = new BMap.Point(116.404, 39.915);
+        map.centerAndZoom(point, 12);
+        
+        if(lng_input && lat_input){
+            var new_point = new BMap.Point(lng_input,lat_input);
+            if(zoom_input){
+                map.centerAndZoom(new_point,zoom_input); 
+            }else{
+                map.centerAndZoom(new_point);
+            }
+        }else{//城市定位
+            var myCity = new BMap.LocalCity();
+            myCity.get(function(result){
+                var cityName = result.name;
+                map.setCenter(cityName);
+            });
+        }
+    }
+    if(marker){
+        map.addOverlay(marker);
+        marker.setAnimation(BMAP_ANIMATION_BOUNCE);        
+    }
+    map.addEventListener("click", setmap);
+    function setmap(e){
+        map.clearOverlays();
+        var newpoint = new BMap.Point(e.point.lng, e.point.lat);
+        var newmarker = new BMap.Marker(newpoint);
+        map.addOverlay(newmarker);
+        newmarker.setAnimation(BMAP_ANIMATION_BOUNCE);
+        jQuery("#warehouse_lng").val(e.point.lng);
+        jQuery("#warehouse_lat").val(e.point.lat);
+    }
+    jQuery(document).ready(function(){
+        jQuery(".ajaxdel").click(function(event){
+            var url = this.href;
+            var target = event.target;
+            jQuery.ajax({
+                    'url' : url,
+                    'dataType' : 'json'
+            }).done(function(data){
+                    if(data.status){
+                            jQuery(target).parents(".ajaxdel_container").fadeOut("slow",function(){
+                                jQuery(target).parents(".ajaxdel_container").remove();
+                            });  
+                    }else{
+                            alert('操作失败!');
+                    }
+            });
+            event.preventDefault();
+        });
+    });
+    jQuery(document).ready(function($){
+        $("#warehouse_add_image").click(function(){
+            var image = $("<input type=\"file\" name=\"houseimage[]\" /><br/>");
+            $(this).parent().append(image);
+        });
+        $('#warehouse_scroll').perfectScrollbar({wheelSpeed: 30});
+        $('#houseform').submit(function(event){
+            var name = $("#warehouse_name").val();
+            var lng = $("#warehouse_lng").val();
+            var lat = $("#warehouse_lat").val();
+            if(name == '' || lng == '' || lat == ''){
+                alert("仓库名称与地图位置为必填！");
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+<!--{template common/footer}-->

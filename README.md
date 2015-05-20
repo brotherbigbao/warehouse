@@ -1,0 +1,2 @@
+# warehouse
+discuz plugin warehouse
